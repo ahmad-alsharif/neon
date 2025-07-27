@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Set character encoding for the document and prevent overflow -->
+    <meta charset="UTF-8 overflow-hidden">
+    <!-- Viewport settings for responsive design -->
+
+    <!-- Project Detail Modal - Full screen overlay for showing project details -->
+    <div id="project-detail" class="fixed inset-0 z-50 bg-black bg-opacity-90 hidden items-center justify-center p-8">
+        <div class="relative w-full max-w-4xl bg-gray-900 rounded-xl overflow-hidden border border-neon-purple">
+            <!-- Modal CSS (should be in <style>) - Controls modal fade animation -->
+            #project-detail {
+                transition: opacity 0.3s ease; /* Smooth fade effect */
+            }
+            <!-- Close button for modal - Positioned top right with hover effect -->
+            <button id="close-project" class="absolute top-4 right-4 text-white text-2xl z-10 hover:text-neon-pink">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="p-8">
+                <!-- JavaScript for modal functionality (should be in <script>) 
+                     Handles project card clicks, modal content population and closing -->
+                // Project detail functionality - Controls the interactive project modal
+                // Gets DOM elements needed for modal operations
+                const projectDetail = document.getElementById('project-detail');
+                const closeProject = document.getElementById('close-project');
+                const projectTitle = document.getElementById('project-title');
+                const projectContent = document.getElementById('project-content');
+
+                // Make all project cards clickable - Adds pointer cursor and click handler
+                // to each project card for displaying project details
+                document.querySelectorAll('.project-card').forEach(card => {
+                    card.style.cursor = 'pointer'; // Change cursor to pointer
+                    card.addEventListener('click', () => {
+                        // Get project info from card
+                        const title = card.querySelector('h3').textContent;
+                        const type = card.querySelector('p').textContent;
+                        const description = card.querySelector('p.text-gray-400').textContent;
+
+                        // Find the corresponding hidden link by project title
+                        let projectId = '';
+                        switch (title.trim()) {
+                            case 'Neon Dashboard UI':
+                                projectId = 'project-neon-dashboard-ui';
+                                break;
+                            case 'Cyberpunk E-commerce':
+                                projectId = 'project-cyberpunk-ecommerce';
+                                break;
+                            case 'Data Visualization Project':
+                                projectId = 'project-data-visualization';
+                                break;
+                            case 'Portfolio Website':
+                                projectId = 'project-portfolio-website';
+                                break;
+                            case 'Machine Learning Model':
+                                projectId = 'project-machine-learning-model';
+                                break;
+                            case 'API Development':
+                                projectId = 'project-api-development';
+                                break;
+                        }
+                        const projectLink = document.getElementById(projectId);
+                        if (projectLink && projectLink.href) {
+                            window.location.href = projectLink.href;
+                            return; // Stop further execution
+                        }
+
+                        // Set modal content (fallback if no link found)
+                        projectTitle.textContent = title;
+                        projectContent.innerHTML = `
+                            <p class="text-neon-green mb-4">${type}</p>
+                            <p class="mb-6">${description}</p>
+                            <div class="bg-gray-800 p-6 rounded-lg">
+                                <h3 class="text-xl font-bold mb-4 text-neon-pink">Project Details</h3>
+                                <p>Detailed project information would go here.</p>
+                                <p class="mt-4">You could include:</p>
+                                <ul class="list-disc pl-5 mt-2 space-y-2">
+                                    <li>Data sources used</li>
+                                    <li>Visualization techniques</li>
+                                    <li>Key insights discovered</li>
+                                    <li>Technologies implemented</li>
+                                </ul>
+                            </div>
+                        `;
+                        
+                        // Show modal
+                        projectDetail.classList.remove('hidden');
+                        document.body.style.overflow = 'hidden'; // Prevent background scroll
+                    });
+                });
+
+                // Close modal when button clicked - Handles modal dismissal
+                // and restores page scrolling
+                closeProject.addEventListener('click', () => {
+                    projectDetail.classList.add('hidden');
+                    document.body.style.overflow = 'auto'; // Restore scroll
+                });
+                <!-- Modal title and content containers - Where dynamic content 
+                     gets inserted when projects are clicked -->
+                <h2 id="project-title" class="text-3xl font-bold mb-4 text-neon-blue"></h2>
+                <div id="project-content" class="text-gray-300">
+                    <!-- Project content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Data points for scatter plot visualization - Small glowing dots 
+         positioned absolutely around the page for decorative effect -->
+    <div class="data-point" style="top: 20%; left: 15%;"></div>
+    <div class="data-point" style="top: 30%; left: 25%; animation-delay: 0.2s;"></div>
+    <div class="data-point" style="top: 40%; left: 70%; animation-delay: 0.4s;"></div>
+    <div class="data-point" style="top: 60%; left: 50%; animation-delay: 0.6s;"></div>
+    <div class="data-point" style="top: 80%; left: 30%; animation-delay: 0.8s;"></div>
+    
+    <!-- SVG lines connecting data points for visual effect - Creates 
+         decorative connecting lines between the data points with neon colors -->
+    <svg class="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+        <line x1="15%" y1="20%" x2="25%" y2="30%" stroke="var(--neon-pink)" stroke-width="1" stroke-dasharray="5,5" opacity="0.5"/>
+        <line x1="25%" y1="30%" x2="70%" y2="40%" stroke="var(--neon-blue)" stroke-width="1" stroke-dasharray="5,5" opacity="0.5"/>
+        <line x1="70%" y1="40%" x2="50%" y2="60%" stroke="var(--neon-purple)" stroke-width="1" stroke-dasharray="5,5" opacity="0.5"/>
+        <line x1="50%" y1="60%" x2="30%" y2="80%" stroke="var(--neon-green)" stroke-width="1" stroke-dasharray="5,5" opacity="0.5"/>
+    </svg>
+    
+    <!-- Responsive viewport settings - Ensures proper scaling on mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Page title - Displayed in browser tab and search results -->
+    <title>Ahmad Alsharif's Portfolio</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfolio of Ahmad Alsharif, showcasing data analysis projects and skills.">
+    <meta name="keywords" content="Portfolio, Data Analyst, Projects, HTML, CSS, JavaScript, SQL, PowerBi, Tableau, R, Python, Excel">
+    
+    <meta property="og:title" content="Ahmad Alsharif's Portfolio">
+    <meta property="og:description" content="Explore the data analysis projects by Ahmad Alsharif.">
+    <meta property="og:image" content="https://ahmad-alsharif.github.io/Portfolio/Assets/Images/man.png">
+    <meta property="og:url" content="https://ahmad-alsharif.github.io/Portfolio/">
+    <meta property="og:type" content="website">
+    
+    <meta itemprop="name" content="Ahmad Alsharif's Portfolio">
+    <meta itemprop="description" content="Portfolio of Ahmad Alsharif, showcasing data analysis projects and skills.">
+    <meta itemprop="image" content="https://ahmad-alsharif.github.io/Portfolio/Assets/Images/man.png">
+    
+    <!-- Tailwind CSS CDN for utility classes - Provides utility-first CSS framework -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN for icons - Provides vector icons used throughout the site -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom styles for neon theme and effects - Contains all custom CSS 
+         for animations, colors, and visual effects -->
+    <style>
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Section transitions */
+        section {
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+        :root {
+            /* Neon color variables for easy reuse */
+            --neon-pink: rgba(255, 42, 109, 0.8);
+            --neon-blue: rgba(5, 217, 232, 0.8);
+            --neon-purple: rgba(211, 0, 197, 0.8);
+            --neon-green: rgba(0, 255, 157, 0.8);
+            --dark-bg: #06010a;
+        }
+        
+        body {
+            background-color: var(--dark-bg); /* Fallback color if image fails to load */
+            color: white;
+            font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+            /* Note: The actual background image is set inline in the body tag above */
+        }
+        
+        @keyframes glow {
+            0%, 100% {
+                text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink);
+            }
+            25% {
+                text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+            }
+            50% {
+                text-shadow: 0 0 10px var(--neon-purple), 0 0 20px var(--neon-purple);
+            }
+            75% {
+                text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 10px 2px rgba(255, 42, 109, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 20px 5px rgba(255, 42, 109, 0.8);
+            }
+        }
+        
+        .neon-text {
+            animation: glow 8s infinite alternate;
+        }
+        
+        .neon-border {
+            border: 2px solid var(--neon-pink);
+            box-shadow: 0 0 10px var(--neon-pink), inset 0 0 10px var(--neon-pink);
+            transition: all 0.3s ease;
+        }
+        
+        .neon-border:hover {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px var(--neon-blue), inset 0 0 20px var(--neon-blue);
+        }
+        
+        .neon-btn {
+            background: transparent;
+            border: 2px solid var(--neon-pink);
+            color: white;
+            padding: 10px 25px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+        
+        .neon-btn:hover {
+            color: var(--dark-bg);
+            background: var(--neon-green);
+            box-shadow: 0 0 20px var(--neon-pink), 0 0 40px var(--neon-blue);
+        }
+        
+        .neon-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--neon-pink), transparent);
+            transition: 0.5s;
+        }
+        
+        .neon-btn:hover::before {
+            left: 100%;
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+
+        .data-point {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue);
+            animation: pulse 2s infinite alternate;
+        }
+        
+        .skill-bar {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-purple));
+            border-radius: 5px;
+            position: relative;
+        }
+        
+        .skill-progress::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                            transparent, 
+                            rgba(255, 255, 255, 0.4), 
+                            transparent);
+            animation: shine 2s infinite;
+        }
+        
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+        
+        .project-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--neon-blue);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .active::after {
+            width: 100%;
+        }
+        
+        .cursor-trail {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--neon-blue), transparent 70%);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            opacity: 0.7;
+            mix-blend-mode: screen;
+        }
+
+        /* New styles for the updates */
+        .profile-img-container {
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 0 20px var(--neon-pink), 0 0 40px var(--neon-pink);
+        }
+
+        .skill-box {
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(5, 217, 232, 0.3);
+        }
+
+        .skill-box:hover {
+            box-shadow: 0 0 20px rgba(5, 217, 232, 0.6), 0 0 30px rgba(5, 217, 232, 0.4);
+            transform: translateY(-5px);
+        }
+
+        /* Button hover animations */
+        a[class*="bg-neon-pink"]:hover {
+            box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink);
+        }
+        a[class*="bg-neon-blue"]:hover {
+            box-shadow: 0 0 15px var(--neon-blue), 0 0 30px var(--neon-blue);
+        }
+        a[class*="bg-neon-purple"]:hover {
+            box-shadow: 0 0 15px var(--neon-purple), 0 0 30px var(--neon-purple);
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background: rgba(11, 11, 11, 0.844);
+            backdrop-filter: blur(12px);
+            min-width: 200px;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 0.5rem 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .dropdown-menu a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--neon-blue);
+            transform: translateX(5px);
+        }
+
+        .dropdown-menu a:last-child {
+            border-bottom: none;
+        }
+
+        /* Centered navigation */
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+    </style>
+</head>
+<body style="background-image: url('Assets/Images/bg.jpg'); background-size: cover; background-position: center; background-attachment: fixed; opacity: 0; transition: opacity 1s ease-in-out;">
+    <!-- Dark overlay div -->
+    <div class="fixed inset-0 bg-black bg-opacity-70 z-0"></div>
+    <!-- 
+        BACKGROUND IMAGE SETTINGS:
+        - Replace the URL above with your desired image URL
+        - background-size: cover = image covers entire element
+        - background-position: center = centers the image
+        - background-attachment: fixed = creates parallax effect
+        You can modify these properties as needed
+    -->
+    <!-- Cursor Trail Effect - Glowing dot that follows mouse movement 
+         for visual feedback -->
+    <div id="cursor-trail"></div>
+    
+    <!-- Main Navigation - Fixed at top with glass morphism effect 
+         Contains site links and responsive menu toggle -->
+    <nav class="fixed w-full z-50 bg-black bg-opacity-80 backdrop-filter backdrop-blur-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <!-- Empty div to balance the flex layout - Used for proper 
+                     spacing of centered navigation items -->
+                <div class="md:w-1/3"></div>
+                
+                <div class="nav-container">
+                    <!-- Primary navigation links - Desktop view -->
+                    <div class="hidden md:flex space-x-8 items-center">
+                        <a href="#home" class="nav-link text-white hover:text-neon-pink">Home</a>
+                        <a href="#about" class="nav-link text-white hover:text-neon-blue">About</a>
+                        <a href="#skills" class="nav-link text-white hover:text-neon-purple">Skills</a>
+                        
+                        
+                        <!-- Projects Dropdown - Expandable menu for project categories 
+                             with hover effect -->
+                        <div class="dropdown relative">
+                            <button class="nav-link text-white hover:text-neon-green flex items-center">
+                                Projects <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a href="#projects">All Projects</a>
+                                <a href="importers.html">Sales Analysis</a>
+                                <a href="student.html">Survey Data</a>
+                                <a href="jobs.html">Job Market Analysis</a>
+                                <a href="crops.html">Crops Yield Analysis</a>
+                                <a href="retailer.html">Inventory Analysis</a>
+                            </div>
+                        </div>
+                        <a href="https://calendly.com/ahmad-alsharif-sa6z/30min" class="nav-link text-white hover:text-neon-pink active" target="_blank">Connect with Me</a>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/3 flex justify-end">
+                    <!-- Mobile menu button - Hidden on desktop, shown on mobile -->
+                    <div class="md:hidden">
+                        <button id="menu-btn" class="text-white focus:outline-none">
+                            <i class="fas fa-bars text-2xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu - Collapsible menu for small screens 
+                 Shows same links as desktop but in vertical layout -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 text-center">
+                <a href="#home" class="block py-2 text-white hover:text-neon-pink">Home</a>
+                <a href="#about" class="block py-2 text-white hover:text-neon-blue">About</a>
+                <a href="#skills" class="block py-2 text-white hover:text-neon-purple">Skills</a>
+                <a href="#projects" class="block py-2 text-white hover:text-neon-green">Projects</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section - Full viewport height with floating animation and neon text 
+         First visible content with call-to-action button -->
+    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden" style="opacity: 0; transform: translateY(20px);">
+        <div class="absolute inset-0 z-0">
+            <!-- Decorative background elements - Colored blurs for visual depth -->
+            <div class="absolute top-1/4 left-1/4 w-32 h-32 rounded-full bg-neon-pink opacity-20 blur-3xl"></div>
+            <div class="absolute bottom-1/3 right-1/4 w-40 h-40 rounded-full bg-neon-blue opacity-20 blur-3xl"></div>
+            <div class="absolute top-2/3 right-1/3 w-28 h-28 rounded-full bg-neon-purple opacity-20 blur-3xl"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 z-10 text-center">
+            <!-- Hero content - Main headline, subheading and call-to-action -->
+            <div class="floating">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white">Ahmad Alsharif <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-pink to-neon-blue"> </span></h1>
+                <h2 class="text-2xl md:text-4xl mb-8 text-gray-300 font-light">Data Analytics & Business Intelligence Professional</h2>
+                <p class="text-lg md:text-xl max-w-2xl mx-auto mb-10 text-gray-400 leading-relaxed">Transforming messy data into clear, actionable insights through powerful visualizations and interactive reporting.</p>
+                
+                <div class="flex justify-center">
+                    <a href="#projects" class="neon-btn">Check Out My Projects</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <!-- Scroll indicator - Animated chevron prompting users to scroll down -->
+            <a href="#about" class="text-white text-2xl">
+                <i class="fas fa-chevron-down"></i>
+            </a>
+        </div>
+    </section>
+    
+    <!-- About Section - Personal information with profile image and contact details 
+         Contains bio, personal info, and action buttons -->
+    <section id="about" class="py-20 bg-black bg-opacity-50" style="opacity: 0; transform: translateY(20px);">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-16">ABOUT ME</span></h2>
+            
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/3 flex justify-center">
+                    <!-- Profile image container - Circular image with glow effect -->
+                    <div class="profile-img-container">
+                        <img src="Assets/Images/man.png" 
+                             alt="Profile" class="w-64 h-64 object-cover">
+                    </div>
+                </div>
+                
+                <div class="md:w-2/3">
+                    <!-- About content - Personal description and contact information -->
+                    <!-- <h3 class="text-2xl font-bold mb-4 text-neon-green">Who am I?</h3>
+                    <p class="text-gray-300 mb-6 leading-relaxed">I’m a data analyst with a strong business and technical foundation, holding a Bachelor’s in Business Information Technology from Cape Breton University and a Post-Graduate Diploma in Data Analytics from SAIT.</p>
+                    <p class="text-gray-300 mb-6 leading-relaxed">I specialize in transforming raw, complex datasets into clear, actionable insights that drive strategic decision-making. My technical toolkit includes SQL, Python, Power BI, and Excel with hands-on experience in data wrangling, ETL processes, predictive analytics, and interactive dashboard development.</p>
+                    <p class="text-gray-300 mb-6 leading-relaxed">What sets me apart is my ability to bridge technical insight with real-world business needs. My early career in account management and operations taught me how to optimize processes, manage client expectations, and deliver solutions that make a measurable impact — not just technical outputs.</p>
+                    <p class="text-gray-300 mb-6 leading-relaxed">I’m continuously learning, adapting, and refining my approach — always focused on solving the right problem, communicating clearly, and delivering meaningful results.</p>
+                    <br> -->
+
+                    <!-- <h3 class="text-2xl font-bold mb-4 text-neon-green">Who am I?</h3> -->
+                    <p class="text-gray-300 mb-6 leading-relaxed">As a data analyst with a robust foundation in both business and technology, I specialize in transforming complex, unstructured data into clear, actionable insights that empower strategic decision-making. Holding a Bachelor’s in Business Information Technology from Cape Breton University and a Post-Graduate Diploma in Data Analytics from SAIT, I bring a unique blend of analytical discipline and business acumen to every project.</p>
+                    <p class="text-gray-300 mb-6 leading-relaxed">My expertise spans SQL, Python, Power BI, Excel, and ETL processes, with hands-on experience developing interactive dashboards, predictive models, and custom BI reports tailored for executives and non-technical stakeholders alike. I’m passionate about turning messy datasets into meaningful stories that drive measurable business outcomes.</p>
+                    <p class="text-gray-300 mb-6 leading-relaxed">What truly differentiates me is my ability to bridge the gap between technical analysis and real-world business challenges. Early roles in account management, sales, and operations have honed my skills in client communication, process optimization, and stakeholder collaboration ensuring that the solutions I deliver are not only data-driven, but also practical and impactful.</p>
+                    <p class="text-gray-300 mb-6 leading-relaxed">Driven by curiosity and continuous learning, I thrive in dynamic environments where I can solve the right problems, communicate insights clearly, and contribute to lasting business value.</p>
+                    <br>
+                    
+                    <!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        Contact info grid - Displays personal details with icons
+                        <div class="flex items-center">
+                            <div class="mr-4 text-neon-pink text-xl">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Name</h4>
+                                <p class="text-gray-400">Ahmad Alsharif</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="mr-4 text-neon-blue text-xl">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Email</h4>
+                                <p class="text-gray-400">ahmad.alsharif@live.ca</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="mr-4 text-neon-purple text-xl">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Phone</h4>
+                                <p class="text-gray-400">+1 (587) 585-8455</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="mr-4 text-neon-green text-xl">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Location</h4>
+                                <p class="text-gray-400">Calgary, AB</p>
+                            </div>
+                        </div>
+                    </div> -->
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <!-- Action buttons - Download CV, services, awards etc. -->
+                        <!-- <a href="#" class="px-4 py-2 bg-neon-pink bg-opacity-20 border border-neon-pink rounded-full text-white hover:bg-opacity-40 transition hover:shadow-lg hover:shadow-neon-pink hover:-translate-y-1 transform duration-300">Resume</a> -->
+                        <a href="Assets/Docs/Ahmad's Certificates.pdf" class="px-4 py-2 bg-neon-pink bg-opacity-20 border border-neon-blue rounded-full text-white hover:bg-opacity-40 transition hover:shadow-lg hover:shadow-neon-blue hover:-translate-y-1 transform duration-300" download>Certificates</a>
+                        <a href="https://www.linkedin.com/in/ahmad-alsharif/" class="px-4 py-2 bg-neon-pink bg-opacity-20 border border-neon-blue rounded-full text-white hover:bg-opacity-40 transition hover:shadow-lg hover:shadow-neon-blue hover:-translate-y-1 transform duration-300" target="_blank">LinkedIn</a>
+                        <a href="https://github.com/ahmad-alsharif" class="px-4 py-2 bg-neon-pink bg-opacity-20 border border-neon-blue rounded-full text-white hover:bg-opacity-40 transition hover:shadow-lg hover:shadow-neon-blue hover:-translate-y-1 transform duration-300" target="_blank">GitHub</a>
+                        <a href="https://calendly.com/ahmad-alsharif-sa6z/30min" class="px-4 py-2 bg-neon-blue bg-opacity-20 border border-neon-pink rounded-full text-white hover:bg-opacity-40 transition hover:shadow-lg hover:shadow-neon-pink hover:-translate-y-1 transform duration-300" target="_blank">Book a 30 Minutes Call</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Skills Section - Grid of skill boxes with icons and descriptions 
+         Visual representation of skills with hover effects -->
+    <section id="skills" class="py-20" style="opacity: 0; transform: translateY(20px);">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-16 ">SKILLS</span></h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="md:w-1/2">
+                    <!-- Left column content can go here if needed -->
+                </div>
+                
+                <div class="md:w-1/2">
+                    <!-- Right column content can go here if needed -->
+                </div>
+            </div>
+            
+            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Skills grid - Each box represents a skill with icon and description -->
+                <div class="text-center p-6 bg-black bg-opacity-30 rounded-xl border border-neon-pink transition skill-box animate-glow" style="animation-iteration-count: infinite; box-shadow: 0 0 20px var(--neon-pink);">
+                    <div class="text-4xl mb-4 text-neon-pink">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h4 class="font-bold mb-2">Data Insights</h4>
+                    <p class="text-gray-400 text-sm">Translate raw data into actionable insights for smarter decisions.</p>
+                </div>
+                
+                <!-- <div class="text-center p-6 bg-black bg-opacity-30 rounded-xl border border-neon-green transition skill-box animate-glow" style="animation-iteration-count: infinite; box-shadow: 0 0 20px var(--neon-green);">
+                    <div class="text-4xl mb-4 text-neon-green"> -->
+                    <div class="text-center p-6 bg-black bg-opacity-30 rounded-xl border border-neon-blue transition skill-box animate-glow" style="animation-iteration-count: infinite; box-shadow: 0 0 20px var(--neon-blue);">
+                    <div class="text-4xl mb-4 text-neon-blue">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4 class="font-bold mb-2">Dashboards</h4>
+                    <p class="text-gray-400 text-sm">Design interactive dashboards.</p>
+                </div>
+                
+                <div class="text-center p-6 bg-black bg-opacity-30 rounded-xl border border-neon-pink transition skill-box animate-glow" style="animation-iteration-count: infinite; box-shadow: 0 0 20px var(--neon-pink);">
+                    <div class="text-4xl mb-4 text-neon-pink">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h4 class="font-bold mb-2">Data Pipelines</h4>
+                    <p class="text-gray-400 text-sm">Build end-to-end solutions using SQL, Python, and Power Query.</p>
+                </div>
+                
+                <div class="text-center p-6 bg-black bg-opacity-30 rounded-xl border border-neon-blue transition skill-box animate-glow" style="animation-iteration-count: infinite; box-shadow: 0 0 20px var(--neon-blue);">
+                    <div class="text-4xl mb-4 text-neon-pink">
+                        <i class="fas fa-wave-square"></i>
+                    </div>
+                    <h4 class="font-bold mb-2">Forecasting</h4>
+                    <p class="text-gray-400 text-sm">Develop predictive models to uncover trends and drive planning.</p>
+                </div>
+            </div>
+            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Skills grid - Each box represents a skill with icon and description -->
+                <!-- <div class="text-center p-6 bg-black bg-opacity-30 rounded-xl border border-neon-pink transition skill-box animate-glow" style="animation-iteration-count: infinite; box-shadow: 0 0 20px var(--neon-pink);">
+                    <div class="text-4xl mb-4 text-neon-pink"> -->
+                <div class="text-center p-6 bg-black bg-opacity-30 rounded-xl border border-neon-green transition skill-box animate-glow" style="animation-iteration-count: infinite; box-shadow: 0 0 20px var(--neon-green);">
+                <div class="text-4xl mb-4 text-neon-green">
+                        <i class="fas fa-table"></i>
+                    </div>
+                    <h4 class="font-bold mb-2">Data Modeling</h4>
+                    <p class="text-gray-400 text-sm">Structure clean, scalable datasets for accurate analysis and reporting.</p>
+                </div>
+                
+                <div class="text-center p-6 bg-black bg-opacity-30 rounded-xl border border-neon-pink transition skill-box animate-glow" style="animation-iteration-count: infinite; box-shadow: 0 0 20px var(--neon-pink);">
+                    <div class="text-4xl mb-4 text-neon-pink">
+                        <i class="fas fa-scroll"></i>
+                    </div>
+                    <h4 class="font-bold mb-2">Business Reporting</h4>
+                    <p class="text-gray-400 text-sm">Deliver reports aligned with goals, KPIs, and client needs.</p>
+                </div>
+                
+                <div class="text-center p-6 bg-black bg-opacity-30 rounded-xl border border-neon-green transition skill-box animate-glow" style="animation-iteration-count: infinite; box-shadow: 0 0 20px var(--neon-green);">
+                    <div class="text-4xl mb-4 text-neon-green">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h4 class="font-bold mb-2">Collaboration</h4>
+                    <p class="text-gray-400 text-sm">Partner with teams across departments to solve real problems.</p>
+                </div>
+                
+                <div class="text-center p-6 bg-black bg-opacity-30 rounded-xl border border-neon-pink transition skill-box animate-glow" style="animation-iteration-count: infinite; box-shadow: 0 0 20px var(--neon-pink);">
+                    <div class="text-4xl mb-4 text-neon-pink">
+                        <i class="fas fa-grip-vertical"></i>
+                    </div>
+                    <h4 class="font-bold mb-2">Data Storytelling</h4>
+                    <p class="text-gray-400 text-sm">Present insights clearly with visuals that drive impact.</p>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+    </section>
+
+   
+    
+    <!-- Projects Section - Grid layout of project cards with hover effects 
+         Showcases portfolio projects with images and tech tags -->
+    <section id="projects" class="py-20 bg-black bg-opacity-50" style="opacity: 0; transform: translateY(20px);">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-16">PROJECTS</span></h2>        
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Projects grid - Responsive layout of project cards -->
+                
+                <!-- Project 1 - Wide World Importers -->
+                <div class="project-card rounded-xl overflow-hidden transition-all duration-300 group" onclick="window.location.href='importers.html'">
+                    <div class="relative overflow-hidden h-60">
+                        <img src="Assets/Projects/WideWorldImporters/compass.jpg" 
+                             alt="Project 1" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
+                        <div class="absolute bottom-0 left-0 p-6">
+                            <h3 class="text-xl font-bold text-white">Sales Analysis</h3>
+                            <p class="text-gray-300">Wide World Importers</p>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white bg-opacity-5 backdrop-blur-sm border-t border-white border-opacity-10">
+                        <p class="text-gray-300 mb-4">A data-driven analysis project optimizing sales, inventory, and profitability for WideWorldImporters.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-white bg-opacity-10 text-white rounded-full text-xs border border-white border-opacity-20">ETL</span>
+                            <span class="px-3 py-1 bg-white bg-opacity-10 text-white rounded-full text-xs border border-white border-opacity-20">Predictive Analysis</span>
+                            <span class="px-3 py-1 bg-white bg-opacity-10 text-white rounded-full text-xs border border-white border-opacity-20">Machine Learning</span>
+                            <span class="px-3 py-1 bg-white bg-opacity-10 text-white rounded-full text-xs border border-white border-opacity-20">Visualization</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 - Survey Data -->
+                <div class="project-card rounded-xl overflow-hidden transition-all duration-300 group" onclick="window.location.href='Student.html'">
+                    <div class="relative overflow-hidden h-60">
+                        <img src="Assets/Projects/Student Mental Health (Power Bi)/Banner1.PNG" 
+                             alt="Project 2" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
+                        <div class="absolute bottom-0 left-0 p-6">
+                            <h3 class="text-xl font-bold text-white">Survey Data</h3>
+                            <p class="text-gray-300">Student Mental Health Survey</p>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white bg-opacity-5 backdrop-blur-sm border-t border-white border-opacity-10">
+                        <p class="text-gray-300 mb-4">A student dataset revealing links between well-being, academics, and campus life for better support services.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-white bg-opacity-10 text-white rounded-full text-xs border border-white border-opacity-20">Data Cleaning</span>
+                            <span class="px-3 py-1 bg-white bg-opacity-10 text-white rounded-full text-xs border border-white border-opacity-20">Data Transformation</span>
+                            <span class="px-3 py-1 bg-white bg-opacity-10 text-white rounded-full text-xs border border-white border-opacity-20">Power BI</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 - Job Market Analysis -->
+                <div class="project-card rounded-xl overflow-hidden transition-all duration-300 group" onclick="window.location.href='jobs.html'">
+                    <div class="relative overflow-hidden h-60">
+                        <img src="Assets/Projects/Job Analysis/banner.png" 
+                             alt="Project 3" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
+                        <div class="absolute bottom-0 left-0 p-6">
+                            <h3 class="text-xl font-bold text-white">Job Market Analysis</h3>
+                            <p class="text-gray-300">Data Analyst Jobs in Calgary, AB</p>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white bg-opacity-5 backdrop-blur-sm border-t border-white border-opacity-10">
+                        <p class="text-gray-300 mb-4">A job market analysis using Python and NLP to uncover top Data Analyst skills in Calgary postings.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-white bg-opacity-10 text-white rounded-full text-xs border border-white border-opacity-20">SerpApi</span>
+                            <span class="px-3 py-1 bg-white bg-opacity-10 text-white rounded-full text-xs border border-white border-opacity-20">Pandas</span>
+                            <span class="px-3 py-1 bg-white bg-opacity-10 text-white rounded-full text-xs border border-white border-opacity-20">Matplotlib</span>
+                            <span class="px-3 py-1 bg-white bg-opacity-10 text-white rounded-full text-xs border border-white border-opacity-20">Seaborn</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 - Agriculture Crops -->
+                <div class="project-card rounded-xl overflow-hidden transition-all duration-300 group" onclick="window.location.href='crops.html'">
+                    <div class="relative overflow-hidden h-60">
+                        <img src="Assets/Projects/Agriculture Crops Yield (R)/Agriculture.png" 
+                             alt="Project 4" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
+                        <div class="absolute bottom-0 left-0 p-6">
+                            <h3 class="text-xl font-bold text-white">Agriculture</h3>
+                            <p class="text-gray-300">Crops Yield Analysis</p>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white bg-opacity-5 backdrop-blur-sm border-t border-white border-opacity-10">
+                        <p class="text-gray-300 mb-4">An R-based analysis linking weather patterns to crop yields, offering insights for sustainable farming strategies.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-white bg-opacity-10 text-white rounded-full text-xs border border-white border-opacity-20">Data Extraction</span>
+                            <span class="px-3 py-1 bg-white bg-opacity-10 text-white rounded-full text-xs border border-white border-opacity-20">R Programming</span>
+                            <span class="px-3 py-1 bg-white bg-opacity-10 text-white rounded-full text-xs border border-white border-opacity-20">Predictive Analysis</span>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <!-- Project 5 - Retailer -->
+                <div class="project-card rounded-xl overflow-hidden transition-all duration-300 group" onclick="window.location.href='retailer.html'">
+                    <div class="relative overflow-hidden h-60">
+                        <img src="Assets/Projects/Global Electronics Retailer (SQL)/banner.png" 
+                             alt="Project 4" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
+                        <div class="absolute bottom-0 left-0 p-6">
+                            <h3 class="text-xl font-bold text-white">Global Electronics Retailer</h3>
+                            <p class="text-gray-300">Inventory Analysis</p>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white bg-opacity-5 backdrop-blur-sm border-t border-white border-opacity-10">
+                        <p class="text-gray-300 mb-4">A supply chain strategy ensuring steady inventory for North America amid shipping issues and global tensions.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-white bg-opacity-10 text-white rounded-full text-xs border border-white border-opacity-20">Business Analysis</span>
+                            <span class="px-3 py-1 bg-white bg-opacity-10 text-white rounded-full text-xs border border-white border-opacity-20">SQL</span>
+                            <span class="px-3 py-1 bg-white bg-opacity-10 text-white rounded-full text-xs border border-white border-opacity-20">Data Cleaning</span>
+                            <span class="px-3 py-1 bg-white bg-opacity-10 text-white rounded-full text-xs border border-white border-opacity-20">Data Visualization</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="flex justify-center">
+                    <a href="https://calendly.com/ahmad-alsharif-sa6z/30min" class="neon-btn" target="_blank">Lets Connect and Talk Data</a>
+        </div>
+    </section>        
+        
+    
+    
+    <!-- Footer - Copyright and social media links 
+         Contains copyright notice and social media icons -->
+    <footer class="py-10 bg-black bg-opacity-50">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-gray-400 text-sm">&copy; 2025 Ahmad Alsharif. All rights reserved.</p>
+            <!-- <div class="flex justify-center space-x-4 mt-4">
+                <a href="#" class="text-neon-pink hover:text-neon-blue transition">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="text-neon-pink hover:text-neon-blue transition">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="text-neon-pink hover:text-neon-blue transition">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="#" class="text-neon-pink hover:text-neon-blue transition">
+                    <i class="fab fa-github"></i> -->
+                </a>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript for page effects and interactions 
+         Contains all interactive functionality for the page -->
+    <script>
+        // Page fade in effect on load - Smooth transition when page loads
+        // Fade in page on load
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '1';
+            
+            // Scroll event listener for section transitions - animates sections as they come into view
+            window.addEventListener('scroll', () => {
+                const sections = document.querySelectorAll('section');
+                const windowHeight = window.innerHeight;
+                const scrollY = window.scrollY;
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
+                    
+                    // If section is in viewport
+                    if (scrollY > sectionTop - windowHeight * 0.75 && 
+                        scrollY < sectionTop + sectionHeight - windowHeight * 0.25) {
+                        section.style.opacity = '1';
+                        section.style.transform = 'translateY(0)';
+                    } else {
+                        // Sections above
+                        if (scrollY < sectionTop) {
+                            section.style.opacity = '0';
+                            section.style.transform = 'translateY(20px)';
+                        }
+                    }
+                });
+            });
+            
+            // Trigger scroll event to initialize sections
+            window.dispatchEvent(new Event('scroll'));
+        });
+
+        // Cursor Trail Effect - Creates a glowing dot that follows the mouse
+        // for visual feedback and interactive feel
+        const cursorTrail = document.getElementById('cursor-trail');
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX;
+            const y = e.clientY;
+            cursorTrail.style.left = `${x}px`;
+            cursorTrail.style.top = `${y}px`;
+        });
+
+        // Mobile Menu Toggle - Shows/hides mobile menu on small screens
+        // Handles the responsive menu functionality
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

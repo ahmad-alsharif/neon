@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sales Analysis | Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts CDN (uncomment to use alternative fonts) -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"> -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"> -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"> -->
+    <!-- Modern Theme Styles -->
+    <style>
+        /* 
+        * CSS Variables for Theme Customization
+        * Change these values to modify the color scheme
+        * Primary Color: Controls main accent color (neon effect)
+        * Secondary Color: Controls darker accent color
+        * Background: Controls the gradient background
+        */
+        :root {
+            /* Theme Color Variables - Customize these */
+            --primary-color: #05d9e8;       /* Main neon color */
+            --secondary-color: #005678;     /* Darker accent color */
+            --background-start: #0d0221;    /* Gradient start color */
+            --background-end: #005678;      /* Gradient end color */
+            
+            /* Font Options - Uncomment to use */
+            /* --main-font: 'Inter', sans-serif; */         /* Default modern font */
+            /* --main-font: 'Poppins', sans-serif; */       /* Clean geometric font */
+            /* --main-font: 'Montserrat', sans-serif; */    /* Elegant sans-serif */
+            /* --main-font: 'Space Mono', monospace; */     /* Tech/Code style */
+            
+            /* Derived Variables (automatically calculated) */
+            --glass-bg: rgba(5, 89, 120, 0.2);          /* Glass card background */
+            --glass-border: rgba(5, 217, 232, 0.3);     /* Glass card border */
+            --dark-bg: var(--background-start);         /* Dark background color */
+            
+            /* Alternative color suggestions - uncomment to use */
+            /* --primary-color: #ff2a6d; */   /* Pink neon */
+            /* --primary-color: #00ff9d; */   /* Green neon */
+            /* --primary-color: #f5d300; */   /* Yellow neon */
+        }
+        
+        /* 
+        * Fade-in Animation 
+        * Creates smooth entrance animation for page elements
+        * Elements fade in while sliding up slightly
+        */
+        @keyframes fadeIn {
+            from { 
+                opacity: 0;                 /* Start invisible */
+                transform: translateY(20px); /* Start 20px down */
+            }
+            to { 
+                opacity: 1;                 /* End fully visible */
+                transform: translateY(0);   /* End at normal position */
+            }
+        }
+        
+        /* 
+        * Body Styles 
+        * Sets up the page background, typography and animations
+        */
+        body {
+            background: linear-gradient(135deg, 
+                var(--background-start) 0%, 
+                var(--background-end) 100%); /* Gradient background */
+            color: white;                    /* Default text color */
+            font-family: var(--main-font, 'Inter', 'Segoe UI', sans-serif); /* Uses custom font or defaults */
+            min-height: 100vh;               /* Full viewport height */
+            opacity: 0;                      /* Start invisible for fade-in */
+            animation: fadeIn 1s ease-out forwards; /* Apply fade-in animation */
+        }
+        
+        /* 
+        * Neon Text Effect 
+        * Creates gradient text with glow effect
+        * Uses background-clip to make text show gradient
+        */
+        .neon-text {
+            background: linear-gradient(90deg, 
+                var(--primary-color), #00ff9d); /* Gradient from primary to green */
+            -webkit-background-clip: text;      /* Clip background to text shape */
+            background-clip: text;              /* Standard property */
+            color: transparent;                 /* Make original text transparent */
+            text-shadow: 0 0 8px rgba(5, 217, 232, 0.4); /* Glow effect */
+            transition: all 0.3s ease;          /* Smooth hover transitions */
+        }
+        
+        /* 
+        * Glass Card Effect 
+        * Creates frosted glass UI elements with border glow
+        * Uses backdrop-filter for blur effect (modern browsers only)
+        */
+        .glass-card {
+            background: var(--glass-bg);        /* Semi-transparent background */
+            backdrop-filter: blur(10px);        /* Blur effect behind element */
+            -webkit-backdrop-filter: blur(10px); /* Safari prefix */
+            border: 1px solid var(--glass-border); /* Semi-transparent border */
+            border-radius: 16px;                /* Rounded corners */
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1), /* Soft shadow */
+                        0 0 15px rgba(5, 217, 232, 0.2); /* Neon glow */
+            transition: all 0.3s ease;          /* Smooth hover transitions */
+        }
+        
+        /* 
+        * Glass Card Hover State 
+        * Enhances the card with elevation and stronger glow on hover
+        */
+        .glass-card:hover {
+            transform: translateY(-5px);        /* Lift card slightly */
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2), /* Deeper shadow */
+                        0 0 25px rgba(5, 217, 232, 0.3); /* Stronger glow */
+        }
+        
+        /* 
+        * Neon Button Styles 
+        * Creates buttons with semi-transparent background and border glow
+        * Includes hidden overflow for the sliding light effect
+        */
+        .btn-neon {
+            background: rgba(5, 217, 232, 0.1); /* Semi-transparent background */
+            border: 1px solid var(--primary-color); /* Border with primary color */
+            color: var(--primary-color);        /* Text color matches border */
+            transition: all 0.3s ease;          /* Smooth transitions */
+            position: relative;                 /* For pseudo-element positioning */
+            overflow: hidden;                   /* Hide overflow of pseudo-element */
+        }
+        
+        /* 
+        * Neon Button Hover State 
+        * Darkens background and adds glow effect on hover
+        */
+        .btn-neon:hover {
+            background: rgba(5, 217, 232, 0.3); /* Darker semi-transparent bg */
+            box-shadow: 0 0 15px rgba(5, 217, 232, 0.4); /* Glow effect */
+        }
+        
+        /* 
+        * Neon Button Light Effect (Pseudo-element)
+        * Creates sliding light animation on hover
+        * Starts off-screen left (-100%) and slides right
+        */
+        .btn-neon::before {
+            content: '';                        /* Required for pseudo-element */
+            position: absolute;                 /* Absolute positioning */
+            top: 0;                            /* Align to top */
+            left: -100%;                       /* Start off-screen left */
+            width: 100%;                       /* Full width of button */
+            height: 100%;                      /* Full height of button */
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(5, 217, 232, 0.4), 
+                transparent); /* Gradient light effect */
+            transition: all 0.5s ease;         /* Smooth sliding animation */
+        }
+        
+        /* 
+        * Neon Button Light Effect on Hover
+        * Slides the light effect from left to right
+        */
+        .btn-neon:hover::before {
+            left: 100%;                        /* End off-screen right */
+        }
+        
+        /* 
+        * Image Styling
+        * Adds rounded corners, shadow, and hover effects to images
+        */
+        img {
+            border-radius: 12px;               /* Slightly rounded corners */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Soft shadow */
+            transition: transform 0.3s ease,   /* Smooth transform */
+                        box-shadow 0.3s ease;  /* Smooth shadow changes */
+        }
+        
+        /* 
+        * Image Hover Effect
+        * Slight scale up and enhanced shadow/glow on hover
+        */
+        img:hover {
+            transform: scale(1.02);            /* Slight zoom effect */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), /* Deeper shadow */
+                        0 0 20px rgba(5, 217, 232, 0.3); /* Neon glow */
+        }
+        
+        /* 
+        * List Item Styling
+        * Adds custom bullet points with neon color
+        */
+        li {
+            position: relative;                /* For pseudo-element positioning */
+            padding-left: 1.5em;               /* Space for custom bullet */
+        }
+        
+        /* 
+        * Custom List Bullets
+        * Replaces default bullets with neon-colored chevrons
+        */
+        li::before {
+            content: '  ';                      /* Chevron character */
+            position: absolute;                /* Absolute positioning */
+            left: 0;                          /* Align to left */
+            color: var(--primary-color);      /* Use primary neon color */
+        }
+        
+        /* 
+        * Mobile Responsive Styles
+        * Adjusts layout and effects for smaller screens
+        */
+        @media (max-width: 768px) {
+            body {
+                background: linear-gradient(135deg, 
+                    var(--background-start) 0%, 
+                    #00334d 100%); /* Simpler gradient for mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <!-- <nav class="w-full bg-black bg-opacity-80 py-4 neon-border">
+        <div class="container mx-auto flex justify-between items-center px-6">
+            <a href="index.html" class="neon-text text-xl font-bold">← Back to Portfolio</a>
+            <span class="text-neon-pink font-bold">Neon Dashboard UI</span>
+        </div>
+    </nav> -->
+    <div class="mt-8 ml-8 animate-fade-in" style="animation-delay: 0.2s">
+        <a href="index.html#projects" class="btn-neon px-6 py-3 rounded-full text-lg font-medium transition-all duration-300 inline-flex items-center">
+            <i class="fas fa-arrow-left mr-2"></i> Back to Portfolio
+        </a>
+    </div>
+    <!-- Project Header -->
+    <header class="text-center py-16 animate-fade-in" style="animation-delay: 0.4s">
+        <h1 class="text-5xl font-bold neon-text mb-4">Job Market Analysis</h1>
+        <div class="flex justify-center space-x-4 mb-4">
+            <span class="px-4 py-1 bg-blue-900 bg-opacity-30 rounded-full text-sm font-medium">SerpApi</span>
+            <span class="px-4 py-1 bg-blue-900 bg-opacity-30 rounded-full text-sm font-medium">Pandas</span>
+            <span class="px-4 py-1 bg-blue-900 bg-opacity-30 rounded-full text-sm font-medium">Matplotlib</span>
+            <span class="px-4 py-1 bg-blue-900 bg-opacity-30 rounded-full text-sm font-medium">Seaborn</span>
+        </div>
+        <!-- <p class="text-gray-300 max-w-2xl mx-auto">Advanced analysis of environmental factors affecting crop productivity with interactive visualizations.</p> -->
+    </header>
+    <!-- Project Details Section -->
+    <main class="container mx-auto px-6 py-10 glass-card flex justify-center animate-fade-in" style="animation-delay: 0.6s">
+        <div id="job" class="toggle-section">
+            <p class="text-gray-300 mb-6 leading-relaxed">In this project, I used Python, SerpApi, and the Google Jobs Search Engine to collect and analyze 72 job postings 
+                for Data Analyst roles in Calgary, AB. My objective was to extract insights on the most in-demand technical and 
+                soft skills using natural language processing and visualization techniques.
+            </p>
+            
+            <p><b>֎ Key Takeaways:</b> </p>
+            <ul>
+                <p class="text-gray-300 mb-6 leading-relaxed">» Employers overwhelmingly expect Excel and SQL, with high demand for Power BI and Git as well</p>
+                <p class="text-gray-300 mb-6 leading-relaxed">» Job listings with higher skill scores tend to blend BI tools with coding and cloud platforms.</p>
+                <p class="text-gray-300 mb-6 leading-relaxed">» Strong skill co-occurrence patterns include:</p>
+                <li>
+                    <p class="text-gray-300 mb-6 leading-relaxed">- SQL + Excel: 22 jobs</p>
+                    <p class="text-gray-300 mb-6 leading-relaxed">- Excel + Power BI: 17 jobs</p>
+                    <p class="text-gray-300 mb-6 leading-relaxed">- SQL + Power BI: 16 jobs</p>
+                    <p class="text-gray-300 mb-6 leading-relaxed">- SQL + Data Visualization: 16 jobs</p>
+                    <p class="text-gray-300 mb-6 leading-relaxed">- Git + SQL: 13 jobs</p>
+                    <p class="text-gray-300 mb-6 leading-relaxed">- Git + Excel: 13 jobs</p>
+                    <p class="text-gray-300 mb-6 leading-relaxed">- SQL + Python: 11 jobs</p>
+                </li>
+            </ul>
+
+            <p><b>֎ Key Visuals:</b> </p>
+            <ul>
+                <p class="text-gray-300 mb-6 leading-relaxed">» Most Requested Skills in Job Descriptions</p>
+                <br>
+                <span class="image main"><img src="assets\Projects\Job Analysis\Top 10 Skills in Data Analyst Job Descriptions.png" alt="" /></span>
+                <br>
+                <p class="text-gray-300 mb-6 leading-relaxed">» Top 10 soft skill charts</p>
+                <br>
+                <span class="image main"><img src="assets\Projects\Job Analysis\Top 10 Soft Skills in Job Descriptions.png" alt="" /></span>
+                <br>
+                <p class="text-gray-300 mb-6 leading-relaxed">» Heatmap of skill co-occurrence</p>
+                <br>
+                <span class="image main"><img src="assets\Projects\Job Analysis\Heatmap of skill co-occurrence.png" alt="" /></span>
+            </ul>
+            <br>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="py-8 text-center text-gray-400 animate-fade-in" style="animation-delay: 0.8s">
+        <div class="container mx-auto px-6">
+            <div class="border-t border-blue-900 border-opacity-30 pt-8">
+                <p>&copy; 2025 Ahmad Alsharif. All rights reserved.</p>
+                <!-- <div class="flex justify-center space-x-4 mt-4">
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div> -->
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
